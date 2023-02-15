@@ -28,12 +28,11 @@ export class AuthInterceptor implements HttpInterceptor {
     if (accessToken) {
       authReq = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
+          "x-user-token": `${accessToken}`
         },
         withCredentials: true,
       });
-      logMessage(`${prefixReq} 🔑 Auth`, [`Adding Auth header`]);
+      logMessage(`${prefixReq} 🔑 Auth`, [`Adding x-user-token header`]);
     } else {
       logMessage(`${prefixReq} 🔑 Auth`, [`No Auth Token to add`]);
       authReq = req.clone();
