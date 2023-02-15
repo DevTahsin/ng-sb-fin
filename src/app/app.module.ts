@@ -1,3 +1,4 @@
+import { httpInterceptorProviders } from './core/interceptors/index';
 import { SessionService } from './core/session.service';
 import { HomeComponent } from './site/home/home.component';
 import { SignInComponent } from './site/signin/signin.component';
@@ -23,7 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [SessionService],
+  providers: [SessionService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
