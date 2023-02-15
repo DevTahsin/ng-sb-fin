@@ -42,7 +42,6 @@ export class SignInComponent implements OnDestroy {
           }
         }),
     );
-    console.log();
   }
 
   ngOnDestroy(): void {
