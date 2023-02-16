@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { CSRFInterceptor } from './csrf.interceptor';
@@ -63,7 +64,7 @@ export const httpInterceptorProviders = [
    *    This could happen anywhere in this particular stream,
    *    as it operates on the response.
    */
-  // addInterceptor(TransformInterceptor),
+  addInterceptor(TransformInterceptor),
 
   /**
    * Allow Cors Request:
@@ -78,7 +79,7 @@ function addInterceptor<T>(interceptor: T) {
   return {
     provide: HTTP_INTERCEPTORS,
     useClass: interceptor,
-    multi: true,
+    multi: true
   };
 }
 
