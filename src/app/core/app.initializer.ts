@@ -17,5 +17,8 @@ export function appInitializer(sessionService: SessionService, localStorageServi
       console.log("Session Socket CAN NOT Started on APP INITIALIZER");
     }
 
+    document.body && document.body.classList.add('loaded');
+
+    resolve();
   });
 }
