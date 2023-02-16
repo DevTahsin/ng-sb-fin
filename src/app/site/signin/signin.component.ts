@@ -36,7 +36,6 @@ export class SignInComponent implements OnDestroy {
         )
         .subscribe((redirectTo) => {
           if (this.session.isLoggedIn) {
-            console.info(`Successfully logged in`);
             const url = redirectTo ? [redirectTo] : ['/home'];
             this.router.navigate(url);
           }

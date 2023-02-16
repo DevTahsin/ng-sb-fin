@@ -3,17 +3,7 @@ export interface SignInRequest {
   password: string;
 }
 
-
 export interface SignInResult {
-  data: {
-    token: string;
-    userGroup: number;
-  };
-  status: SignInResultStatus;
-  error: string;
-}
-
-export enum SignInResultStatus {
-  Ok = 0,
-  Error = 1
+  token: string;
+  userGroup: number;
 }
