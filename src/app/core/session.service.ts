@@ -1,7 +1,9 @@
+import { ApiResult, CommonResult } from './models/api-result';
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { SocketMessageResponse, SocketMessageType } from './models/socket-message';
 import { LocalStorageService } from './localstorage.service';
-import { SignInRequest, SignInResult, SignInResultStatus } from './models';
+import { SignInRequest, SignInResult } from './models';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
@@ -61,20 +63,20 @@ export class SessionService {
       email,
       password,
     };
-    return this.http.post<SignInResult>(signinUrl, body).pipe(
+    return this.http.post<CommonResult<SignInResult>>(signinUrl, body).pipe(
       catchError((_) => {
         this.logout('Internal Server Error');
         return EMPTY;
       }),
       map((res) => {
-        if (res?.status == SignInResultStatus.Ok) {
+        console.log('RES', res)
+        if (res.isSuccessfull) {
           this.accessToken = res.data.token;
           this.sessionStateSubject.next({ loggedIn: true, message: 'Signed In', token: res.data.token });
-          this._isLoggedIn = true;
           this.startSessionSocket();
           return true;
         } else {
-          this.logout(res.error);
+          this.logout(res.data);
           return false;
         }
       }),
@@ -82,8 +84,13 @@ export class SessionService {
   }
 
   startSessionSocket() {
-    if (this.activeSessionSocket$ && this.activeSessionSocket$.observers.length > 0) {
+    if (this.activeSessionSocket$) {
       this.activeSessionSocket$.complete();
+      if (this.activeSessionSocket$.observers.length > 0) {
+        for (let i = 0; i < this.activeSessionSocket$.observers.length; i++) {
+          this.activeSessionSocket$.unsubscribe();
+        }
+      }
     }
 
     if (this.accessToken) {
@@ -112,21 +119,22 @@ export class SessionService {
       this.activeSessionSocket$.subscribe(
         (msg) => {
           console.log('session socket message: ' + msg);
+          this._isLoggedIn = true;
           const socketMessage = msg as SocketMessageResponse;
           if (socketMessage?.MessageType == SocketMessageType.LogOff) {
             this.logout('Logged out by session socket', true);
           } else {
+            this.activeSessionSocket$.next({ messageType: SocketMessageType.Ping });
             console.log('session socket ping: ' + socketMessage?.TimeStamp);
           }
-          this.activeSessionSocket$.next({ messageType: SocketMessageType.Ping });
         },
         (err) => {
           console.log('session socket socket error: ' + err);
-          this.logout('Logged out by session socket');
+          // this.logout('Logged out by session socket');
         },
         () => {
           console.log('session socket closed');
-          this.logout('Logged out by session socket');
+          // this.logout('Logged out by session socket');
         },
       );
     }

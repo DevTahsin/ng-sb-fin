@@ -1,3 +1,5 @@
+import { ToastrService } from 'ngx-toastr';
+import { ApiResult, ApiStatus, CommonResult } from './../models/api-result';
 import {
   HttpInterceptor,
   HttpHandler,
@@ -20,12 +22,16 @@ export class TransformInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       map((event) => {
         if (event instanceof HttpResponse) {
-          const body = event.body?.data;
-          logMessage(`${prefixRes} 🚧 Transform Response`, [], [body]);
-          if (body) {
-            return event.clone({ body });
+          if (event.body.status === ApiStatus.Ok) {
+            const body = event.body?.data;
+            let transformedData: CommonResult<any> = {isSuccessfull: true, data: body};
+            logMessage(`${prefixRes} 🚧 Transform Response SUCCESS ✔`, [], [body]);
+            return event.clone({body:transformedData});
+          } else {
+            logMessage(`${prefixRes} 🚧 Transform Response ERROR ❌`, [], [event.body?.error]);
+            let transformedData: CommonResult<any> = {isSuccessfull: false, data: event.body?.error};
+            return event.clone({ body: transformedData});
           }
-          return event.clone(); // undefined means dont change it
         } else {
           return event;
         }
