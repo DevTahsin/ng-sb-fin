@@ -26,6 +26,8 @@ export class TransformInterceptor implements HttpInterceptor {
             return event.clone({ body });
           }
           return event.clone(); // undefined means dont change it
+        } else {
+          return event;
         }
       }),
     );

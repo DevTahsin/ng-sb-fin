@@ -82,11 +82,11 @@ export class SessionService {
   }
 
   startSessionSocket() {
-    if (this.activeSessionSocket$) {
+    if (this.activeSessionSocket$ && this.activeSessionSocket$.observers.length > 0) {
       this.activeSessionSocket$.complete();
     }
 
-    if(this.accessToken){
+    if (this.accessToken) {
       this.handleSessionSocket();
     }
   }
@@ -102,7 +102,7 @@ export class SessionService {
       return null;
     }
     const root = environment.WS;
-    const liveSessionUrl = `${root}/${token}`;
+    const liveSessionUrl = `${root}/?${token}`;
     return webSocket(liveSessionUrl);
   }
 
@@ -111,24 +111,28 @@ export class SessionService {
     if (this.activeSessionSocket$) {
       this.activeSessionSocket$.subscribe(
         (msg) => {
+          console.log('session socket message: ' + msg);
           const socketMessage = msg as SocketMessageResponse;
           if (socketMessage?.MessageType == SocketMessageType.LogOff) {
-            this.logout('Logged out by session socket');
+            this.logout('Logged out by session socket', true);
           } else {
             console.log('session socket ping: ' + socketMessage?.TimeStamp);
           }
+          this.activeSessionSocket$.next({ messageType: SocketMessageType.Ping });
         },
         (err) => {
           console.log('session socket socket error: ' + err);
+          this.logout('Logged out by session socket');
         },
         () => {
           console.log('session socket closed');
+          this.logout('Logged out by session socket');
         },
       );
     }
   }
 
-  logout(message: string) {
+  logout(message: string, closeSocket: boolean = false) {
     this.accessToken = null;
     this._isLoggedIn = false;
     this.sessionStateSubject.next({
@@ -139,8 +143,9 @@ export class SessionService {
     if (this.activeSessionSocket$) {
       this.activeSessionSocket$.next({ messageType: SocketMessageType.LogOff });
     }
-    this.closeSessionSocket();
-
+    if (closeSocket) {
+      this.closeSessionSocket();
+    }
     this.router.navigate(['/signin']);
   }
 }

@@ -6,7 +6,7 @@ import { LogHttpInterceptor } from './log-http.interceptor';
 import { EnsureSSLInterceptor } from './ensure-ssl.interceptor';
 import { LogHeadersInterceptor } from './log-headers.interceptor';
 import { BusyInterceptor } from './busy.interceptor';
-import { ReadOnlyInterceptor } from './read-only.interceptor';
+import { AllowCorsInterceptor } from './allow-cors.interceptor';
 
 /**
  *  Interceptors:
@@ -64,6 +64,14 @@ export const httpInterceptorProviders = [
    *    as it operates on the response.
    */
   // addInterceptor(TransformInterceptor),
+
+  /**
+   * Allow Cors Request:
+   *   Allow CORS requests.
+   *  This must happen after the request is made, but before the response is received.
+   *  This is because the request is made to a different domain.
+   */
+  addInterceptor(AllowCorsInterceptor),
 ];
 
 function addInterceptor<T>(interceptor: T) {
