@@ -3,3 +3,71 @@
 /* import botstrap 4 from node modules*/
 
 @import "~bootstrap/scss/bootstrap";
+
+
+body.loading {
+  overflow: hidden;
+}
+
+body.loading .loader {
+  display: block;
+}
+
+body.loading .app {
+  display: none;
+}
+
+body.loaded {
+  overflow: auto;
+}
+
+body.loaded .loader {
+  display: none;
+}
+
+body.loaded .app {
+  display: block;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 9999;
+  display: none;
+}
+
+.loader .spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  border: 3px solid #f3f3f3;
+  border-top-color: #3498db;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+      -webkit-transform: rotate(0deg);
+  }
+  100% {
+      -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
