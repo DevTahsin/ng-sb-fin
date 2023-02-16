@@ -1,0 +1,11 @@
+{
+  "/proxy": {
+    "target": "http://66.70.229.82:8181",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/proxy": ""
+    }
+  }
+}
