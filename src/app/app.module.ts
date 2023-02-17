@@ -1,5 +1,4 @@
 import { GreetingService } from './core/greeting.service';
-import { Home2Component } from './site/home2/home2.component';
 import { httpInterceptorProviders } from './core/interceptors/index';
 import { SessionService } from './core/session.service';
 import { HomeComponent } from './site/home/home.component';
@@ -23,8 +22,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
     AppComponent,
     NotFoundComponent,
     SignInComponent,
-    HomeComponent,
-    Home2Component
+    HomeComponent
   ],
   imports: [
     BrowserModule,
