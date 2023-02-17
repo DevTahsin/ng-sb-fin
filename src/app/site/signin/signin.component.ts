@@ -9,7 +9,7 @@ import { map, mergeMap } from 'rxjs/operators';
   selector: 'app-signin',
   templateUrl: './signin.component.html'
 })
-export class SignInComponent implements OnDestroy {
+export class SignInComponent implements OnDestroy, OnInit {
 
   private subs = new Subscription();
   fgSignIn: FormGroup = new FormGroup({
@@ -21,6 +21,21 @@ export class SignInComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router
   ) { }
+
+  ngOnInit(): void {
+    this.subs.add(
+      this.session.sessionState$.subscribe((isLoggedIn) => {
+        if (isLoggedIn.loggedIn) {
+          let params = this.route.snapshot.queryParams;
+          if (params['redirectTo']) {
+            this.router.navigate([params['redirectTo']]);
+          } else {
+            this.router.navigate(['/home']);
+          }
+        }
+      })
+    );
+  }
 
   onSubmit() {
     if(this.fgSignIn.invalid) {
@@ -35,6 +50,7 @@ export class SignInComponent implements OnDestroy {
           map((qp) => qp['redirectTo']),
         )
         .subscribe((redirectTo) => {
+          console.log('signin submit subscribe hit');
           if (this.session.isLoggedIn) {
             const url = redirectTo ? [redirectTo] : ['/home'];
             this.router.navigate(url);
@@ -44,6 +60,7 @@ export class SignInComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('signin destroy hit');
     this.subs.unsubscribe();
   }
 }

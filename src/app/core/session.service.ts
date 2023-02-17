@@ -71,6 +71,8 @@ export class SessionService {
       map((res) => {
         console.log('RES', res)
         if (res.isSuccessfull) {
+
+          this._isLoggedIn = true;
           this.accessToken = res.data.token;
           this.sessionStateSubject.next({ loggedIn: true, message: 'Signed In', token: res.data.token });
           this.startSessionSocket();
@@ -119,11 +121,14 @@ export class SessionService {
       this.activeSessionSocket$.subscribe(
         (msg) => {
           console.log('session socket message: ' + msg);
-          this._isLoggedIn = true;
           const socketMessage = msg as SocketMessageResponse;
           if (socketMessage?.MessageType == SocketMessageType.LogOff) {
             this.logout('Logged out by session socket', true);
           } else {
+            if (this._isLoggedIn == false) {
+              this._isLoggedIn = true;
+              this.sessionStateSubject.next({ loggedIn: true, message: 'Signed In', token: this.accessToken });
+            }
             this.activeSessionSocket$.next({ messageType: SocketMessageType.Ping });
             console.log('session socket ping: ' + socketMessage?.TimeStamp);
           }
