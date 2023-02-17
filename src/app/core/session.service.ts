@@ -69,9 +69,7 @@ export class SessionService {
         return EMPTY;
       }),
       map((res) => {
-        console.log('RES', res)
         if (res.isSuccessfull) {
-
           this._isLoggedIn = true;
           this.accessToken = res.data.token;
           this.sessionStateSubject.next({ loggedIn: true, message: 'Signed In', token: res.data.token });

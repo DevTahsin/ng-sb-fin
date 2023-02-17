@@ -50,7 +50,6 @@ export class SignInComponent implements OnDestroy, OnInit {
           map((qp) => qp['redirectTo']),
         )
         .subscribe((redirectTo) => {
-          console.log('signin submit subscribe hit');
           if (this.session.isLoggedIn) {
             const url = redirectTo ? [redirectTo] : ['/home'];
             this.router.navigate(url);
@@ -60,7 +59,6 @@ export class SignInComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    console.log('signin destroy hit');
     this.subs.unsubscribe();
   }
 }
