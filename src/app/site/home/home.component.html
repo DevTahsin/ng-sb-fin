@@ -1,3 +1,8 @@
 <h1>Home</h1>
 <p>Greeting Message:</p>
 <p>{{greetingMessage |async}}</p>
+
+<button class="btn btn-primary" (click)="logout()">Logout</button>
+
+<p class="mt-4">The website automatically logs back in, saving the session in local storage. This flow starts at app.initializer.ts. I wanted to do session control with websocket, but after the first ping response after connecting to websocket, the socket is automatically closed with "1008 Policy Violation: token expired". But I implemented the desired scenario in session.service.ts. If the error on the socket server is resolved, the relevant scenario will work.
+  Note: I continue to use socket to check if the token I keep in local storage is valid.</p>
