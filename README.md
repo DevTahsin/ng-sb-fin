@@ -1,27 +1,29 @@
-# StockbridgeFinance
+# ng-sb-fin
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.2.
+Requires nodejs 10.13.x/12.11.x or later minor 
 
-## Development server
+projects developed on angular 11.x
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+3rd party included packages
+- bootstrap 4
+- ngx-toastr bootstrap4
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Project has
+- Login/Logout flow
+- Active session listening with websocket
+- Authorized API request provided by Angular HttpClient with interceptors under the `src\app\core\interceptors` 
 
-## Build
+# Outputs
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Login Screen
+![Login Screen](https://raw.githubusercontent.com/DevTahsin/ng-sb-fin/main/imgs/1.png)
 
-## Running unit tests
+After login greeting screen
+![Greeting Screen](https://raw.githubusercontent.com/DevTahsin/ng-sb-fin/main/imgs/2.png)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Session Connection and transmitted datas
+![Session Connection and transmitted datas](https://raw.githubusercontent.com/DevTahsin/ng-sb-fin/main/imgs/3.png)
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Local session storage and authorization checking
+![Local session storage and authorization checking](https://raw.githubusercontent.com/DevTahsin/ng-sb-fin/main/imgs/session.gif)
